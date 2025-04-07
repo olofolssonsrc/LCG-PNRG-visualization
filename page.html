@@ -93,12 +93,7 @@ function drawSquare() {
         for (let j = 0; j < resY; j++) {
             var c = ColorsALL[j][i];
             ctx.fillStyle = `rgba(${c}, ${c}, ${c}, 1)`;
-            ctx.imageSmoothingEnabled = false; 
-            ctx.fillStyle = `rgba(${c}, ${c}, ${c}, 1)`; 
             ctx.fillRect(i * rectWidth, j * rectHeight, rectWidth, rectHeight);
-
-            ctx.strokeStyle = `rgba(${c}, ${c}, ${c}, 1)`; 
-            ctx.strokeRect(i * rectWidth, j * rectHeight, rectWidth, rectHeight);
         }  
     }
 }
