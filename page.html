@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCG PRNG</title>
+    <style>
+
+    </style>
+</head>
+<body>
+
+<label for="resX">resX:</label>
+<input type="number" id="resX" name="resX" value="100"><br>
+
+<label for="resY">resY:</label>
+<input type="number" id="resY" name="resY" value="100"><br>
+
+<label for="X">seed:</label>
+<input type="number" id="X" name="X" value="1"><br>
+
+<label for="b">b:</label>
+<input type="number" id="b" name="b" value="0"><br>
+
+<label for="m">m:</label>
+<input type="number" id="m" name="m" value="2305843009213693951"><br>
+
+<label for="a">a:</label>
+<input type="number" id="a" name="a" value="423543"><br>
+
+<label for="lockCanvasSize">lock canvassize:</label>
+<input type="checkbox" id="lockCanvasSize">
+<br>
+<canvas id="canvas" ></canvas>
+
+</body>
+<script>
+
+var resX = 100;
+var resY = 100;
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = resX *4 ;
+canvas.height = resY * 4;
+ctx.imageSmoothingEnabled = false;
+  
+var lockCanvasSize = false;
+
+var 
+
+X = 1;
+b = 0;
+m = 2305843009213693951;
+a = 423543;
+function nextRandom(){
+    X = (X * a + b ) % m;
+    return X / m;
+}
+
+var ColorsALL = new Array(resY).fill(0).map(() => new Array(resX).fill(0)).map(() => new Array(4).fill(0));
+
+function getColors(){
+    for (let j = 0; j < resY; j++) {  
+        for (let i = 0; i < resX; i++) {  
+            ColorsALL[j][i] = parseInt(255*nextRandom());
+            //console.log(ColorsALL[j][i])
+        }
+    }
+}
+
+function drawSquare() {
+
+    X = parseInt(document.getElementById("X").value) ;
+    b = parseInt(document.getElementById("b").value) ;
+    resX = parseInt(document.getElementById("resX").value) ;
+    resY = parseInt(document.getElementById("resY").value);
+    m = parseInt(document.getElementById("m").value);
+    a = parseInt(document.getElementById("a").value) ;
+    lockCanvasSize = document.getElementById("lockCanvasSize").checked;
+
+    ColorsALL = new Array(resY).fill(0).map(() => new Array(resX).fill(0)).map(() => new Array(4).fill(0));
+
+    if(!lockCanvasSize){
+        canvas.width = resX * 4;
+        canvas.height = resY * 4;
+    }
+    rectWidth = canvas.width / resX;
+    rectHeight = canvas.height / resY;
+    getColors()
+
+    for (let i = 0; i < resX; i++) {
+        for (let j = 0; j < resY; j++) {
+            var c = ColorsALL[j][i];
+            ctx.fillStyle = `rgba(${c}, ${c}, ${c}, 1)`;
+            ctx.imageSmoothingEnabled = false; 
+            ctx.fillStyle = `rgba(${c}, ${c}, ${c}, 1)`; 
+            ctx.fillRect(i * rectWidth, j * rectHeight, rectWidth, rectHeight);
+
+            ctx.strokeStyle = `rgba(${c}, ${c}, ${c}, 1)`; 
+            ctx.strokeRect(i * rectWidth, j * rectHeight, rectWidth, rectHeight);
+        }  
+    }
+}
+
+drawSquare()
+
+document.addEventListener("DOMContentLoaded", function() {
+    const inputs = document.querySelectorAll("input");
+    inputs.forEach(input => {
+        input.addEventListener("input", drawSquare);
+    });
+});
+
+</script>
+</body>
+</html>
